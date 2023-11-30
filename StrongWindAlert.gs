@@ -7,8 +7,7 @@ const latitude = 36.0720605;
 const longitude = 137.6779845;
 
 
-
-//OPEN_WEATHERから1時間毎の風速を取得し、7.0m/s以上の時間帯があればGmailで通知を行う
+//(★トリガー設定必要)OPEN_WEATHERから1時間毎の風速を取得し、7.0m/s以上の時間帯があればGmailで通知を行う関数
 function getFutureWindData() {
   // スクリプトプロパティに取得したAPIキーを呼び出す
   const apiKey = PropertiesService.getScriptProperties().getProperty('OPEN_WEATHER_API_KEY');
@@ -45,8 +44,8 @@ function getFutureWindData() {
   futureHourlywindList.push([timeData,windData]);
   }
 
-  //出力確認用
-  Logger.log(futureHourlywindList);
+  //出力確認用(スクリプトから確認したい場合は以下の//を外す)
+  //Logger.log(futureHourlywindList);
 
   //メール送信フラグを設置(Yes →　該当あり。メールを送る。No →　該当なし。メールを送らない)
   let sendFlag = 'No'
@@ -69,10 +68,9 @@ function getFutureWindData() {
     Logger.log('強風は発生しない予報のため、メールは送信しませんでした。')
   }
   
-
 }
 
-
+//強風が発生する予報が出た場合、スプレッドシートにデータを書き込みグラフを作成する関数
 function createGraph(list){
   //新しくシートを作成
   const newSs = SpreadsheetApp.create('風速データグラフ描画');
@@ -111,6 +109,8 @@ function createGraph(list){
   return imageData
 }
 
+
+
 //メールを送信する関数
 function sendEmailTest(data) {
   // Gmailでメールを送信する処理を追加
@@ -135,11 +135,13 @@ function sendEmailTest(data) {
 
 }
 
-//　作成したスプレッドシートを自動削除
+
+//(★トリガー設定が必要)作成したスプレッドシートを自動削除
 function deleteSheet(){
   //スクリプトプロパティから対象となるシートを探す(なければ終了)
   const targetId = PropertiesService.getScriptProperties().getProperty('NEWSHEET_ID');
 
+  //スクリプトプロパティが存在していた場合に処理を実行なければ何もせず終了
   if(targetId){
     //スプレッドシートを削除
     DriveApp.getFileById(targetId).setTrashed(true);
