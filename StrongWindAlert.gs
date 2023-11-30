@@ -117,7 +117,7 @@ function sendEmailTest(data) {
   //スクリプトプロパティに自分のメールアドレスを保存
   const recipient = PropertiesService.getScriptProperties().getProperty('MY_MAILADDRESS'); // 送信先のメールアドレスを指定
   const today = new Date().toLocaleDateString('ja-JP');
-  const subject = `強風発生のお知らせ(${today})`;//メールタイトルはここで変更
+  const subject = `強風アラート(${today})`;//メールタイトルはここで変更
   const body = `24時間以内に7.0m/s以上の強風が発生する可能性があります。\n詳細は添付のグラフをご確認ください。`;//メール本文の内容はここで変更
 
 
